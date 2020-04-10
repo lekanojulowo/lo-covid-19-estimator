@@ -12,11 +12,11 @@ const covid19ImpactEstimator = (data) => {
 
   // normalize days; check for weeks and months if used
   switch (periodType) {
-    case 'weeks':
-      timeToElapse *= 5;
-      break;
     case 'months':
       timeToElapse *= 30;
+      break;
+    case 'weeks':
+      timeToElapse *= 7;
       break;
     default:
       timeToElapse *= 1;
