@@ -1,13 +1,12 @@
 const covid19ImpactEstimator = (data) => {
   // Destructuring the given data
   const {
-    region: { name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation },
+    region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
     periodType,
-    timeToElapse,
     reportedCases,
-    population,
     totalHospitalBeds
   } = data;
+  let { timeToElapse } = data;
 
   // Custom Functions and Variables
 
@@ -18,11 +17,14 @@ const covid19ImpactEstimator = (data) => {
       break;
     case 'months':
       timeToElapse *= 30;
+      break;
+    default:
+      timeToElapse *= 1;
   }
 
   // calculate InfectionsByRequestedTime
   const calculateInfectionsByRequestedTime = (currentlyInfected) => {
-    const factor = parseInt(timeToElapse / 3);
+    const factor = parseInt(timeToElapse / 3, 10);
     return currentlyInfected * 2 ** factor;
   };
   // calculate AvailableBeds
@@ -30,7 +32,7 @@ const covid19ImpactEstimator = (data) => {
     const bedsAvailable = totalHospitalBeds * 0.35;
     const shortage = bedsAvailable - severeCasesByRequestedTime;
     const result = shortage < 0 ? shortage : bedsAvailable;
-    return parseInt(result);
+    return parseInt(result, 10);
   };
 
   // the best case estimation
@@ -47,13 +49,11 @@ const covid19ImpactEstimator = (data) => {
   );
   // challenge 3
   impact.casesForICUByRequestedTime = impact.infectionsByRequestedTime * 0.05;
-  impact.casesForVentilatorsByRequestedTime =
-    impact.infectionsByRequestedTime * 0.02;
-  impact.dollarsInFlight =
-    impact.infectionsByRequestedTime *
-    avgDailyIncomePopulation *
-    avgDailyIncomeInUSD *
-    timeToElapse;
+  impact.casesForVentilatorsByRequestedTime = impact.infectionsByRequestedTime * 0.02;
+  impact.dollarsInFlight = impact.infectionsByRequestedTime
+    * avgDailyIncomePopulation
+    * avgDailyIncomeInUSD
+    * timeToElapse;
 
   // the severe case estimation
   const severeImpact = {};
@@ -63,21 +63,17 @@ const covid19ImpactEstimator = (data) => {
     severeImpact.currentlyInfected
   );
   // challenge 2
-  severeImpact.severeCasesByRequestedTime =
-    severeImpact.infectionsByRequestedTime * 0.15;
+  severeImpact.severeCasesByRequestedTime = severeImpact.infectionsByRequestedTime * 0.15;
   severeImpact.hospitalBedsByRequestedTime = calculateAvailableBeds(
     severeImpact.severeCasesByRequestedTime
   );
   // challenge 3
-  severeImpact.casesForICUByRequestedTime =
-    severeImpact.infectionsByRequestedTime * 0.05;
-  severeImpact.casesForVentilatorsByRequestedTime =
-    severeImpact.infectionsByRequestedTime * 0.02;
-  severeImpact.dollarsInFlight =
-    severeImpact.infectionsByRequestedTime *
-    avgDailyIncomePopulation *
-    avgDailyIncomeInUSD *
-    timeToElapse;
+  severeImpact.casesForICUByRequestedTime = severeImpact.infectionsByRequestedTime * 0.05;
+  severeImpact.casesForVentilatorsByRequestedTime = severeImpact.infectionsByRequestedTime * 0.02;
+  severeImpact.dollarsInFlight = severeImpact.infectionsByRequestedTime
+    * avgDailyIncomePopulation
+    * avgDailyIncomeInUSD
+    * timeToElapse;
 
   return {
     data, // the input data you got
@@ -85,19 +81,5 @@ const covid19ImpactEstimator = (data) => {
     severeImpact // your severe case estimation
   };
 };
-
-const covid19 = covid19ImpactEstimator({
-  region: {
-    name: 'Africa',
-    avgAge: 19.7,
-    avgDailyIncomeInUSD: 5,
-    avgDailyIncomePopulation: 0.71
-  },
-  periodType: 'days',
-  timeToElapse: 58,
-  reportedCases: 674,
-  population: 66622705,
-  totalHospitalBeds: 1380614
-});
 
 export default covid19ImpactEstimator;
