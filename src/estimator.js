@@ -28,6 +28,16 @@ const covid19ImpactEstimator = (data) => {
     return parseInt(result, 10);
   };
 
+  // calculate dollarsInFlight
+  const calculateDollarsInFlight = (infectionsByRequestedTime) => {
+    const infections =
+      infectionsByRequestedTime *
+      avgDailyIncomeInUSD *
+      avgDailyIncomePopulation;
+    const result = infections / timeToElapse;
+    return Math.trunc(result);
+  };
+
   // the best case estimation
   const impact = {};
   // challenge 1
@@ -42,13 +52,10 @@ const covid19ImpactEstimator = (data) => {
   );
   // challenge 3
   impact.casesForICUByRequestedTime = impact.infectionsByRequestedTime * 0.05;
-  impact.casesForVentilatorsByRequestedTime = impact.infectionsByRequestedTime * 0.02;
-  impact.dollarsInFlight = parseInt(
-    (impact.infectionsByRequestedTime
-      * avgDailyIncomePopulation
-      * avgDailyIncomeInUSD)
-      / timeToElapse,
-    10
+  impact.casesForVentilatorsByRequestedTime =
+    impact.infectionsByRequestedTime * 0.02;
+  impact.dollarsInFlight = calculateDollarsInFlight(
+    impact.infectionsByRequestedTime
   );
 
   // the severe case estimation
@@ -59,19 +66,18 @@ const covid19ImpactEstimator = (data) => {
     severeImpact.currentlyInfected
   );
   // challenge 2
-  severeImpact.severeCasesByRequestedTime = severeImpact.infectionsByRequestedTime * 0.15;
+  severeImpact.severeCasesByRequestedTime =
+    severeImpact.infectionsByRequestedTime * 0.15;
   severeImpact.hospitalBedsByRequestedTime = calculateAvailableBeds(
     severeImpact.severeCasesByRequestedTime
   );
   // challenge 3
-  severeImpact.casesForICUByRequestedTime = severeImpact.infectionsByRequestedTime * 0.05;
-  severeImpact.casesForVentilatorsByRequestedTime = severeImpact.infectionsByRequestedTime * 0.02;
-  severeImpact.dollarsInFlight = parseInt(
-    (severeImpact.infectionsByRequestedTime
-      * avgDailyIncomePopulation
-      * avgDailyIncomeInUSD)
-      / timeToElapse,
-    10
+  severeImpact.casesForICUByRequestedTime =
+    severeImpact.infectionsByRequestedTime * 0.05;
+  severeImpact.casesForVentilatorsByRequestedTime =
+    severeImpact.infectionsByRequestedTime * 0.02;
+  severeImpact.dollarsInFlight = calculateDollarsInFlight(
+    impact.infectionsByRequestedTime
   );
 
   return {
