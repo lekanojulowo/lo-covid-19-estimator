@@ -43,10 +43,13 @@ const covid19ImpactEstimator = (data) => {
   // challenge 3
   impact.casesForICUByRequestedTime = impact.infectionsByRequestedTime * 0.05;
   impact.casesForVentilatorsByRequestedTime = impact.infectionsByRequestedTime * 0.02;
-  impact.dollarsInFlight = impact.infectionsByRequestedTime
-    * avgDailyIncomePopulation
-    * avgDailyIncomeInUSD
-    * timeToElapse;
+  impact.dollarsInFlight = parseInt(
+    (impact.infectionsByRequestedTime
+      * avgDailyIncomePopulation
+      * avgDailyIncomeInUSD)
+      / timeToElapse,
+    10
+  );
 
   // the severe case estimation
   const severeImpact = {};
@@ -63,10 +66,13 @@ const covid19ImpactEstimator = (data) => {
   // challenge 3
   severeImpact.casesForICUByRequestedTime = severeImpact.infectionsByRequestedTime * 0.05;
   severeImpact.casesForVentilatorsByRequestedTime = severeImpact.infectionsByRequestedTime * 0.02;
-  severeImpact.dollarsInFlight = severeImpact.infectionsByRequestedTime
-    * avgDailyIncomePopulation
-    * avgDailyIncomeInUSD
-    * timeToElapse;
+  severeImpact.dollarsInFlight = parseInt(
+    (severeImpact.infectionsByRequestedTime
+      * avgDailyIncomePopulation
+      * avgDailyIncomeInUSD)
+      / timeToElapse,
+    10
+  );
 
   return {
     data, // the input data you got
