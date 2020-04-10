@@ -11,9 +11,9 @@ const covid19ImpactEstimator = (data) => {
   // Custom Functions and Variables
 
   // normalize days; check for weeks and months if used
-  if (periodType === 'months') timeToElapse *= 30;
-  else if (periodType === 'weeks') timeToElapse *= 7;
-  else timeToElapse *= 1;
+  if (periodType === 'months') timeToElapse = Math.trunc(timeToElapse * 30);
+  else if (periodType === 'weeks') timeToElapse = Math.trunc(timeToElapse * 7);
+  else timeToElapse = Math.trunc(timeToElapse * 1);
 
   // calculate InfectionsByRequestedTime
   const calculateInfectionsByRequestedTime = (currentlyInfected) => {
@@ -45,13 +45,19 @@ const covid19ImpactEstimator = (data) => {
     impact.currentlyInfected
   );
   // challenge 2
-  impact.severeCasesByRequestedTime = impact.infectionsByRequestedTime * 0.15;
+  impact.severeCasesByRequestedTime = Math.trunc(
+    impact.infectionsByRequestedTime * 0.15
+  );
   impact.hospitalBedsByRequestedTime = calculateAvailableBeds(
     impact.severeCasesByRequestedTime
   );
   // challenge 3
-  impact.casesForICUByRequestedTime = impact.infectionsByRequestedTime * 0.05;
-  impact.casesForVentilatorsByRequestedTime = impact.infectionsByRequestedTime * 0.02;
+  impact.casesForICUByRequestedTime = Math.trunc(
+    impact.infectionsByRequestedTime * 0.05
+  );
+  impact.casesForVentilatorsByRequestedTime = Math.trunc(
+    impact.infectionsByRequestedTime * 0.02
+  );
   impact.dollarsInFlight = calculateDollarsInFlight(
     impact.infectionsByRequestedTime
   );
@@ -64,13 +70,19 @@ const covid19ImpactEstimator = (data) => {
     severeImpact.currentlyInfected
   );
   // challenge 2
-  severeImpact.severeCasesByRequestedTime = severeImpact.infectionsByRequestedTime * 0.15;
+  severeImpact.severeCasesByRequestedTime = Math.trunc(
+    severeImpact.infectionsByRequestedTime * 0.15
+  );
   severeImpact.hospitalBedsByRequestedTime = calculateAvailableBeds(
     severeImpact.severeCasesByRequestedTime
   );
   // challenge 3
-  severeImpact.casesForICUByRequestedTime = severeImpact.infectionsByRequestedTime * 0.05;
-  severeImpact.casesForVentilatorsByRequestedTime = severeImpact.infectionsByRequestedTime * 0.02;
+  severeImpact.casesForICUByRequestedTime = Math.trunc(
+    severeImpact.infectionsByRequestedTime * 0.05
+  );
+  severeImpact.casesForVentilatorsByRequestedTime = Math.trunc(
+    severeImpact.infectionsByRequestedTime * 0.02
+  );
   severeImpact.dollarsInFlight = calculateDollarsInFlight(
     severeImpact.infectionsByRequestedTime
   );
