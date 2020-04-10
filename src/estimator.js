@@ -17,7 +17,7 @@ const covid19ImpactEstimator = (data) => {
 
   // calculate InfectionsByRequestedTime
   const calculateInfectionsByRequestedTime = (currentlyInfected) => {
-    const factor = parseInt(timeToElapse / 3, 10);
+    const factor = Math.trunc(timeToElapse / 3);
     return currentlyInfected * 2 ** factor;
   };
   // calculate AvailableBeds
@@ -25,7 +25,7 @@ const covid19ImpactEstimator = (data) => {
     const bedsAvailable = totalHospitalBeds * 0.35;
     const shortage = bedsAvailable - severeCasesByRequestedTime;
     const result = shortage < 0 ? shortage : bedsAvailable;
-    return parseInt(result, 10);
+    return Math.trunc(result);
   };
 
   // calculate dollarsInFlight
@@ -72,7 +72,7 @@ const covid19ImpactEstimator = (data) => {
   severeImpact.casesForICUByRequestedTime = severeImpact.infectionsByRequestedTime * 0.05;
   severeImpact.casesForVentilatorsByRequestedTime = severeImpact.infectionsByRequestedTime * 0.02;
   severeImpact.dollarsInFlight = calculateDollarsInFlight(
-    impact.infectionsByRequestedTime
+    severeImpact.infectionsByRequestedTime
   );
 
   return {
