@@ -13,7 +13,7 @@ const covid19ImpactEstimator = (data) => {
   // normalize days; check for weeks and months if used
   switch (periodType) {
     case 'weeks':
-      timeToElapse *= 7;
+      timeToElapse *= 5;
       break;
     case 'months':
       timeToElapse *= 30;
@@ -49,11 +49,13 @@ const covid19ImpactEstimator = (data) => {
   );
   // challenge 3
   impact.casesForICUByRequestedTime = impact.infectionsByRequestedTime * 0.05;
-  impact.casesForVentilatorsByRequestedTime = impact.infectionsByRequestedTime * 0.02;
-  impact.dollarsInFlight = impact.infectionsByRequestedTime
-    * avgDailyIncomePopulation
-    * avgDailyIncomeInUSD
-    * timeToElapse;
+  impact.casesForVentilatorsByRequestedTime =
+    impact.infectionsByRequestedTime * 0.02;
+  impact.dollarsInFlight =
+    impact.infectionsByRequestedTime *
+    avgDailyIncomePopulation *
+    avgDailyIncomeInUSD *
+    timeToElapse;
 
   // the severe case estimation
   const severeImpact = {};
@@ -63,17 +65,21 @@ const covid19ImpactEstimator = (data) => {
     severeImpact.currentlyInfected
   );
   // challenge 2
-  severeImpact.severeCasesByRequestedTime = severeImpact.infectionsByRequestedTime * 0.15;
+  severeImpact.severeCasesByRequestedTime =
+    severeImpact.infectionsByRequestedTime * 0.15;
   severeImpact.hospitalBedsByRequestedTime = calculateAvailableBeds(
     severeImpact.severeCasesByRequestedTime
   );
   // challenge 3
-  severeImpact.casesForICUByRequestedTime = severeImpact.infectionsByRequestedTime * 0.05;
-  severeImpact.casesForVentilatorsByRequestedTime = severeImpact.infectionsByRequestedTime * 0.02;
-  severeImpact.dollarsInFlight = severeImpact.infectionsByRequestedTime
-    * avgDailyIncomePopulation
-    * avgDailyIncomeInUSD
-    * timeToElapse;
+  severeImpact.casesForICUByRequestedTime =
+    severeImpact.infectionsByRequestedTime * 0.05;
+  severeImpact.casesForVentilatorsByRequestedTime =
+    severeImpact.infectionsByRequestedTime * 0.02;
+  severeImpact.dollarsInFlight =
+    severeImpact.infectionsByRequestedTime *
+    avgDailyIncomePopulation *
+    avgDailyIncomeInUSD *
+    timeToElapse;
 
   return {
     data, // the input data you got
