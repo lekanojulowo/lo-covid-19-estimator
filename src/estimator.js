@@ -1,12 +1,17 @@
 const covid19ImpactEstimator = (data) => {
   // Destructuring the given data
   const {
-    region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
+    region: {
+      avgDailyIncomeInUSD,
+      avgDailyIncomePopulation
+    },
     periodType,
     reportedCases,
     totalHospitalBeds
   } = data;
-  let { timeToElapse } = data;
+  let {
+    timeToElapse
+  } = data;
 
   // Custom Functions and Variables
 
@@ -30,14 +35,14 @@ const covid19ImpactEstimator = (data) => {
 
   // calculate dollarsInFlight
   const calculateDollarsInFlight = (infectionsByRequestedTime) => {
-    const infections = infectionsByRequestedTime
-      * avgDailyIncomeInUSD
-      * avgDailyIncomePopulation;
+    const infections = infectionsByRequestedTime *
+      avgDailyIncomeInUSD *
+      avgDailyIncomePopulation;
     const result = infections / timeToElapse;
     return Math.trunc(result);
   };
 
-  // the best case estimation
+  // the best case estimation computation
   const impact = {};
   // challenge 1
   impact.currentlyInfected = reportedCases * 10;
@@ -62,7 +67,7 @@ const covid19ImpactEstimator = (data) => {
     impact.infectionsByRequestedTime
   );
 
-  // the severe case estimation
+  // the severe case estimation computation
   const severeImpact = {};
   // challenge 1
   severeImpact.currentlyInfected = reportedCases * 50;
