@@ -1,19 +1,15 @@
 const covid19ImpactEstimator = (data) => {
   // Destructuring the given data
   const {
-    region: {
-      avgDailyIncomeInUSD,
-      avgDailyIncomePopulation
-    },
+    region: { avgDailyIncomeInUSD, avgDailyIncomePopulation },
     periodType,
     reportedCases,
     totalHospitalBeds
   } = data;
-  let {
-    timeToElapse
-  } = data;
+  let { timeToElapse } = data;
 
   // Custom Functions and Variables
+
   // normalize days; check for weeks and months if used
   if (periodType === 'months') timeToElapse = Math.trunc(timeToElapse * 30);
   else if (periodType === 'weeks') timeToElapse = Math.trunc(timeToElapse * 7);
