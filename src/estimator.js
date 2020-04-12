@@ -9,6 +9,7 @@ const covid19ImpactEstimator = (data) => {
   let { timeToElapse } = data;
 
   // Custom Functions and Variables
+
   // normalize days; check for weeks and months if used
   if (periodType === 'months') timeToElapse = Math.trunc(timeToElapse * 30);
   if (periodType === 'weeks') timeToElapse = Math.trunc(timeToElapse * 7);
@@ -92,4 +93,5 @@ const covid19ImpactEstimator = (data) => {
     severeImpact // your severe case estimation
   };
 };
+
 export default covid19ImpactEstimator;
